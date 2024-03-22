@@ -1,5 +1,5 @@
 build:
-	go build -o ./bin/main ./cmd/cbt-app-v1/main.go
+	go build -o ./bin/main ./cmd/*.go
 
 run: tailwindcss templ build
 
@@ -10,7 +10,7 @@ deploy:
 	git push origin master
 
 tailwindcss:
-	bun run tailwindcss --config tailwind.config.js -i tailwind-input.css -o static/css/tailwind.css
+	npx tailwindcss -i tailwind-input.css -o static/css/tailwind.css
 
 
 templ:
