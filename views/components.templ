@@ -1,0 +1,222 @@
+package views
+
+templ headerComponent() {
+	<div class="navbar bg-base-100 container m-auto">
+		<div class="navbar-start">
+			<div class="dropdown">
+				<div tabindex="0" role="button" class="btn btn-ghost lg:hidden">
+					<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h8m-8 6h16"></path></svg>
+				</div>
+				<ul tabindex="0" class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
+					<li><a href="/">Home</a></li>
+					<li><a href="#about">About</a></li>
+					<li><a href="#pricing">Pricing</a></li>
+					<li><a href="#contact">Contatct</a></li>
+				</ul>
+			</div>
+			<a href="/" class="btn btn-ghost text-xl">CBTAppV1</a>
+		</div>
+		<div class="navbar-center hidden lg:flex">
+			<ul class="menu menu-horizontal px-1">
+				<li><a href="/">Home</a></li>
+				<li><a href="#about">About</a></li>
+				<li><a href="#pricing">Pricing</a></li>
+				<li><a href="#contact">Contact</a></li>
+			</ul>
+		</div>
+		<div class="navbar-end">
+			<a href="/auth?type=login" class="btn ml-3">Log In</a>
+			<a href="/auth?type=signup" class="btn btn-primary ml-3">Sign Up</a>
+		</div>
+	</div>
+}
+
+templ headerComponent2() {
+	<div class="navbar bg-base-100 container m-auto">
+		<div class="flex-1">
+			<a href="/" class="btn btn-ghost text-xl">CBTAppV1</a>
+		</div>
+		<div class="flex-none">
+			<div class="dropdown dropdown-end">
+				<div tabindex="0" role="button" class="btn btn-ghost btn-circle avatar">
+					<div class="w-10 rounded-full">
+						<img alt="Tailwind CSS Navbar component" src="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg"/>
+					</div>
+				</div>
+				<ul tabindex="0" class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
+					<li>
+						<a class="justify-between">
+							Profile
+							<span class="badge">New</span>
+						</a>
+					</li>
+					<li><a>Settings</a></li>
+					<li>
+						<a hx-post="/logout" hx-disabled-elt="this">
+							Logout<span class="loading loading-spinner htmx-indicator"></span>
+						</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+}
+
+templ heroComponent() {
+	<div class="hero min-h-screen bg-base-200">
+		<div class="hero-content text-center container m-auto">
+			<div class="max-w-md">
+				<h1 class="text-5xl font-bold">Hello there</h1>
+				<p class="py-6">Provident cupiditate voluptatem et in. Quaerat fugiat ut assumenda excepturi exercitationem quasi. In deleniti eaque aut repudiandae et a id nisi.</p>
+				<button class="btn btn-primary">Get Started</button>
+			</div>
+		</div>
+	</div>
+}
+
+templ authComponent(formType string) {
+	<div class="flex flex-col justify-center items-center h-svh">
+		<div
+			class="card w-auto bg-base-100 shadow-xl"
+			if formType == "" {
+				x-data="{ showLogin: false, showSignup: true, email: '', password: '', showError: true, showForgotPassword: false }"
+			}
+			else
+			if formType == "login" {
+				x-data="{ showLogin: true, showSignup: false, email: '', password: '', showError: true, showForgotPassword: false }"
+			}
+			else
+			if formType == "signup" {
+				x-data="{ showLogin: false, showSignup: true, email: '', password: '', showError: true, showForgotPassword: false }"
+			}
+			else
+			if formType == "forgotpassword" {
+				x-data="{ showLogin: false, showSignup: false, email: '', password: '', showError: true, showForgotPassword: true }"
+			}
+		>
+			<a href="/" class="link mb-5 mt-3 ml-3">Back to Home</a>
+			@signupFormComponent()
+			@loginFormComponent()
+			@ForgotPasswordComponent()
+		</div>
+	</div>
+}
+
+// templ primaryButton() {}
+templ ConfirmEmailComponent() {
+	<div class="flex flex-col justify-center items-center gap-6 px-2 py-4 w-full">
+		<h2 class="card-title">Confirm Email</h2>
+		<p>Please check mailbox to confirm your email</p>
+		<div class="card-actions justify-end self-end">
+			<a href="/auth?type=login" class="link">Go to Login</a>
+		</div>
+	</div>
+}
+
+// login form component
+templ loginFormComponent() {
+	<form id="login-form" class="flex flex-col gap-6 w-96 px-2 py-4 justify-center items-center" hx-post="/login" hx-swap="outerHTML" x-show="showLogin" hx-disabled-elt="#loginBtn" hx-target-error="#error-login-message">
+		<label class="input input-bordered flex items-center gap-2 w-full">
+			<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="w-4 h-4 opacity-70"><path d="M2.5 3A1.5 1.5 0 0 0 1 4.5v.793c.026.009.051.02.076.032L7.674 8.51c.206.1.446.1.652 0l6.598-3.185A.755.755 0 0 1 15 5.293V4.5A1.5 1.5 0 0 0 13.5 3h-11Z"></path><path d="M15 6.954 8.978 9.86a2.25 2.25 0 0 1-1.956 0L1 6.954V11.5A1.5 1.5 0 0 0 2.5 13h11a1.5 1.5 0 0 0 1.5-1.5V6.954Z"></path></svg>
+			<input type="email" class="grow" placeholder="Email" required name="email" x-model="email"/>
+		</label>
+		<label class="input input-bordered flex items-center gap-2 w-full">
+			<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="w-4 h-4 opacity-70"><path fill-rule="evenodd" d="M14 6a4 4 0 0 1-4.899 3.899l-1.955 1.955a.5.5 0 0 1-.353.146H5v1.5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1-.5-.5v-2.293a.5.5 0 0 1 .146-.353l3.955-3.955A4 4 0 1 1 14 6Zm-4-2a.75.75 0 0 0 0 1.5.5.5 0 0 1 .5.5.75.75 0 0 0 1.5 0 2 2 0 0 0-2-2Z" clip-rule="evenodd"></path></svg>
+			<input type="password" class="grow" placeholder="Password" required name="password" x-model="password"/>
+		</label>
+		<a class="link link-primary self-start" @click="showSignup = false, showLogin = false, showError = false, email = '', password = '', showForgotPassword = true">Forgot Password?</a>
+		<div id="error-login-message" x-on:htmx:after-swap.camel="showError = true" class="text-red-500"></div>
+		<button id="loginBtn" class="btn btn-active w-full" @click="showError = false">
+			<span class="loading loading-spinner htmx-indicator"></span>
+			<span>Log In</span>
+		</button>
+		<p>Don't have an account? <a class="link" @click="showSignup = !showSignup, showLogin = !showLogin, showError = false, email = '', password = ''">Sign Up</a></p>
+	</form>
+}
+
+// signup form component
+templ signupFormComponent() {
+	<form class="flex flex-col gap-6 w-full px-2 py-4 justify-center items-center" hx-post="/signup" hx-swap="outerHTML" x-show="showSignup" hx-disabled-elt="#signupBtn" hx-target-error="#error-signup-message">
+		<div class="flex justify-between items-center w-full gap-3">
+			<label class="input input-bordered flex items-center gap-2">
+				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="w-4 h-4 opacity-70"><path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6ZM12.735 14c.618 0 1.093-.561.872-1.139a6.002 6.002 0 0 0-11.215 0c-.22.578.254 1.139.872 1.139h9.47Z"></path></svg>
+				<input type="text" class="" placeholder="First Name" required name="first-name" x-model="firstName"/>
+			</label>
+			<label class="input input-bordered flex items-center gap-2">
+				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="w-4 h-4 opacity-70"><path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6ZM12.735 14c.618 0 1.093-.561.872-1.139a6.002 6.002 0 0 0-11.215 0c-.22.578.254 1.139.872 1.139h9.47Z"></path></svg>
+				<input type="text" class="" placeholder="Last Name" required name="last-name" x-model="lastName"/>
+			</label>
+		</div>
+		<label class="input input-bordered flex items-center gap-2 w-full">
+			<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="w-4 h-4 opacity-70"><path d="M2.5 3A1.5 1.5 0 0 0 1 4.5v.793c.026.009.051.02.076.032L7.674 8.51c.206.1.446.1.652 0l6.598-3.185A.755.755 0 0 1 15 5.293V4.5A1.5 1.5 0 0 0 13.5 3h-11Z"></path><path d="M15 6.954 8.978 9.86a2.25 2.25 0 0 1-1.956 0L1 6.954V11.5A1.5 1.5 0 0 0 2.5 13h11a1.5 1.5 0 0 0 1.5-1.5V6.954Z"></path></svg>
+			<input type="phone" class="grow" placeholder="Phone No" required name="phone" x-model="phone"/>
+		</label>
+		<label class="input input-bordered flex items-center gap-2 w-full">
+			<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="w-4 h-4 opacity-70"><path d="M2.5 3A1.5 1.5 0 0 0 1 4.5v.793c.026.009.051.02.076.032L7.674 8.51c.206.1.446.1.652 0l6.598-3.185A.755.755 0 0 1 15 5.293V4.5A1.5 1.5 0 0 0 13.5 3h-11Z"></path><path d="M15 6.954 8.978 9.86a2.25 2.25 0 0 1-1.956 0L1 6.954V11.5A1.5 1.5 0 0 0 2.5 13h11a1.5 1.5 0 0 0 1.5-1.5V6.954Z"></path></svg>
+			<input type="email" class="grow" placeholder="Email" required name="email" x-model="email"/>
+		</label>
+		<label class="input input-bordered flex items-center gap-2 w-full">
+			<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="w-4 h-4 opacity-70"><path fill-rule="evenodd" d="M14 6a4 4 0 0 1-4.899 3.899l-1.955 1.955a.5.5 0 0 1-.353.146H5v1.5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1-.5-.5v-2.293a.5.5 0 0 1 .146-.353l3.955-3.955A4 4 0 1 1 14 6Zm-4-2a.75.75 0 0 0 0 1.5.5.5 0 0 1 .5.5.75.75 0 0 0 1.5 0 2 2 0 0 0-2-2Z" clip-rule="evenodd"></path></svg>
+			<input type="password" class="grow" placeholder="Password" required name="password" x-model="password"/>
+		</label>
+		<div id="error-signup-message" x-on:htmx:after-swap.camel="showError = true" class="text-red-500"></div>
+		<button id="signupBtn" class="btn btn-active w-full" @click="showError = false">
+			<span class="loading loading-spinner htmx-indicator"></span>
+			<span>Sign Up</span>
+		</button>
+		<p>Have an account? <a class="link" @click="showLogin = !showLogin, showSignup = !showSignup, showError = false, email = '', password = ''">Log In</a></p>
+	</form>
+}
+
+//forgot password component
+templ ForgotPasswordComponent() {
+	<form class="flex flex-col gap-6 w-96 px-2 py-4 justify-center items-center" hx-post="/forgotpassword" hx-disabled-elt="#forgotPasswordBtn" hx-swap="innerHTML" x-show="showForgotPassword" hx-target-error="#error-forgotpassword-message">
+		<h2 class="card-title">Forgot Password</h2>
+		<label class="input input-bordered flex items-center gap-2 w-full">
+			<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="w-4 h-4 opacity-70"><path d="M2.5 3A1.5 1.5 0 0 0 1 4.5v.793c.026.009.051.02.076.032L7.674 8.51c.206.1.446.1.652 0l6.598-3.185A.755.755 0 0 1 15 5.293V4.5A1.5 1.5 0 0 0 13.5 3h-11Z"></path><path d="M15 6.954 8.978 9.86a2.25 2.25 0 0 1-1.956 0L1 6.954V11.5A1.5 1.5 0 0 0 2.5 13h11a1.5 1.5 0 0 0 1.5-1.5V6.954Z"></path></svg>
+			<input type="email" class="grow" placeholder="Email" required name="email" x-model="email"/>
+		</label>
+		<div id="error-forgotpassword-message" x-on:htmx:after-swap.camel="showError = true" class="text-red-500"></div>
+		<button id="forgotPasswordBtn" class="btn btn-active w-full" @click="showError = false">
+			<div class="loading loading-spinner htmx-indicator"></div>
+			<span>Submit</span>
+		</button>
+		<a @click="showForgotPassword = !showForgotPassword, showLogin = !showLogin, showError = false, email = ''" class="link">Back to Log In</a>
+	</form>
+}
+
+// successful password reset component
+templ SuccessfulPasswordResetComponent() {
+	<div class="flex flex-col justify-center items-center gap-5">
+		<h2 class="card-title">Password Reset Successful</h2>
+		<p>Your password reset link has been sent to your mail.</p>
+		<div class="card-actions justify-end self-end">
+			<a href="/auth?type=login" class="link">Go to Login</a>
+		</div>
+	</div>
+}
+
+// update password component
+templ UpdatePasswordComponent() {
+	<div class="flex flex-col justify-center items-center h-svh">
+		<div class="card w-auto bg-base-100 shadow-xl" x-data="{ showError: true}">
+			<a href="/" class="link mb-5 mt-3 ml-3">Back to Home</a>
+			<form class="flex flex-col gap-6 w-96 px-2 py-4 justify-center items-center" hx-post="/updatepassword" hx-disabled-elt="#updatePasswordBtn" hx-swap="innerHTML" hx-target-error="#error-updatepassword-message">
+				<h2 class="card-title">Update Password</h2>
+				<label class="input input-bordered flex items-center gap-2 w-full">
+					<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="w-4 h-4 opacity-70"><path fill-rule="evenodd" d="M14 6a4 4 0 0 1-4.899 3.899l-1.955 1.955a.5.5 0 0 1-.353.146H5v1.5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1-.5-.5v-2.293a.5.5 0 0 1 .146-.353l3.955-3.955A4 4 0 1 1 14 6Zm-4-2a.75.75 0 0 0 0 1.5.5.5 0 0 1 .5.5.75.75 0 0 0 1.5 0 2 2 0 0 0-2-2Z" clip-rule="evenodd"></path></svg>
+					<input type="password" class="grow" placeholder="New Password" required name="password1"/>
+				</label>
+				<label class="input input-bordered flex items-center gap-2 w-full">
+					<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="w-4 h-4 opacity-70"><path fill-rule="evenodd" d="M14 6a4 4 0 0 1-4.899 3.899l-1.955 1.955a.5.5 0 0 1-.353.146H5v1.5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1-.5-.5v-2.293a.5.5 0 0 1 .146-.353l3.955-3.955A4 4 0 1 1 14 6Zm-4-2a.75.75 0 0 0 0 1.5.5.5 0 0 1 .5.5.75.75 0 0 0 1.5 0 2 2 0 0 0-2-2Z" clip-rule="evenodd"></path></svg>
+					<input type="password" class="grow" placeholder="Confirm New Password" required name="password2"/>
+				</label>
+				<div id="error-updatepassword-message" x-on:htmx:after-swap.camel="showError = true" class="text-red-500"></div>
+				<button id="updatePasswordBtn" class="btn btn-active w-full" @click="showError = false">
+					<div class="loading loading-spinner htmx-indicator"></div>
+					<span>Submit</span>
+				</button>
+			</form>
+		</div>
+	</div>
+}

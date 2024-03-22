@@ -1,0 +1,20 @@
+package views
+
+templ layout(title string) {
+	<!DOCTYPE html>
+	<html lang="en">
+		<head>
+			<meta charset="UTF-8"/>
+			<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+			<title>{ title }</title>
+			<link rel="stylesheet" type="text/css" href="static/css/main.css"/>
+			<link rel="stylesheet" type="text/css" href="static/css/tailwind.css"/>
+			<script src="/static/js/htmx@1.9.10.min.js"></script>
+			<script src="/static/js/response-targets.js"></script>
+			<script src="/static/js/alpinejs@3.x.x.min.js"></script>
+		</head>
+		<body hx-ext="response-targets">
+			{ children... }
+		</body>
+	</html>
+}
